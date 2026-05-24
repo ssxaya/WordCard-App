@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Word } from "@/types/word";
 import { themeConfig } from "@/config/theme";
-import { Settings, Volume2, Sun, Moon, Palette } from "lucide-react";
+import { Settings } from "lucide-react";
 
 interface WordCardProps {
   word: Word;
@@ -20,6 +20,7 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
   const [activeTouches, setActiveTouches] = useState(0);
   const [isDraggingProgress, setIsDraggingProgress] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
+  const [activeMenuTab, setActiveMenuTab] = useState<string>("设置");
   const lastTouchCountRef = useRef(0);
   const progressContainerRef = useRef<HTMLDivElement>(null);
   const minSwipeDistance = 50;
@@ -201,64 +202,33 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
           onMouseDown={(e) => e.stopPropagation()}
           onTouchStart={(e) => e.stopPropagation()}
         >
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-lg font-semibold text-slate-800">设置</h2>
-            <button
-              className="p-1.5 rounded-full hover:bg-slate-100 transition-colors"
-              onClick={(e) => {
-                e.stopPropagation();
-                setShowMenu(false);
+          <div className="relative flex">
+            {["设置", "切换词书"].map((tab, index) => (
+              <button
+                key={tab}
+                className={`flex-1 pb-2 text-sm font-medium transition-colors duration-300 ${
+                  activeMenuTab === tab ? "text-slate-800" : "text-slate-400"
+                }`}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setActiveMenuTab(tab);
+                }}
+                onMouseDown={(e) => e.stopPropagation()}
+                onTouchStart={(e) => e.stopPropagation()}
+              >
+                {tab}
+              </button>
+            ))}
+            <div
+              className="absolute bottom-0 h-0.5 bg-slate-800 rounded-full transition-all duration-300"
+              style={{
+                width: "50%",
+                left: `${(activeMenuTab === "设置" ? 0 : 1) * 50}%`,
               }}
-              onMouseDown={(e) => e.stopPropagation()}
-              onTouchStart={(e) => e.stopPropagation()}
-            >
-              <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </button>
+            />
           </div>
-          
-          <div className="grid grid-cols-4 gap-3">
-            <button 
-              className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="p-2 rounded-full bg-slate-100">
-                <Volume2 className="w-5 h-5 text-slate-600" />
-              </div>
-              <span className="text-xs text-slate-600">音量</span>
-            </button>
-            
-            <button 
-              className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="p-2 rounded-full bg-slate-100">
-                <Sun className="w-5 h-5 text-slate-600" />
-              </div>
-              <span className="text-xs text-slate-600">亮度</span>
-            </button>
-            
-            <button 
-              className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="p-2 rounded-full bg-slate-100">
-                <Palette className="w-5 h-5 text-slate-600" />
-              </div>
-              <span className="text-xs text-slate-600">主题</span>
-            </button>
-            
-            <button 
-              className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors"
-              onClick={(e) => e.stopPropagation()}
-            >
-              <div className="p-2 rounded-full bg-slate-100">
-                <Settings className="w-5 h-5 text-slate-600" />
-              </div>
-              <span className="text-xs text-slate-600">更多</span>
-            </button>
-          </div>
+
+          <div className="mt-4 min-h-[40px]" />
         </div>
       )}
 
