@@ -227,8 +227,8 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
                 <div 
                   className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-800 transition-all duration-300 rounded-full ${
                     isDraggingProgress 
-                      ? 'h-5 w-0.75' 
-                      : 'w-0.5 h-4 hover:h-5 hover:w-0.75'
+                      ? 'scale-125 h-5 w-0.75' 
+                      : 'w-0.5 h-4 hover:scale-125 hover:h-5 hover:w-0.75'
                   }`}
                 />
               </div>
