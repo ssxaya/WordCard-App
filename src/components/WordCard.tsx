@@ -198,7 +198,7 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
               {Array.from({ length: total }).map((_, idx) => (
                 <div
                   key={idx}
-                  className={`${themeConfig.dotSize} rounded-full transition-all duration-300 cursor-pointer ${
+                  className={`${themeConfig.dotSize} rounded-full transition-all duration-300 cursor-pointer hover:scale-150 ${
                     idx === currentIndex 
                       ? `${themeConfig.colors.dotActive} scale-150` 
                       : themeConfig.colors.dotInactive
@@ -219,7 +219,7 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
               onTouchStart={handleProgressTouchStart}
             >
               <div 
-                className="absolute top-1/2 -translate-y-1/2 w-0.5 h-4 bg-slate-800 transition-all duration-300"
+                className="absolute top-1/2 -translate-y-1/2 w-0.5 h-4 bg-slate-800 transition-all duration-300 hover:scale-150 hover:h-6 hover:w-1"
                 style={{ left: `${(currentIndex / (total - 1)) * 100}%` }}
               />
             </div>
