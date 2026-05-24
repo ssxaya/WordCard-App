@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Word } from "@/types/word";
 import { themeConfig } from "@/config/theme";
+import { Settings, Volume2, Sun, Moon, Palette } from "lucide-react";
 
 interface WordCardProps {
   word: Word;
@@ -18,6 +19,7 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
   const [touchStartTime, setTouchStartTime] = useState<number>(0);
   const [activeTouches, setActiveTouches] = useState(0);
   const [isDraggingProgress, setIsDraggingProgress] = useState(false);
+  const [showMenu, setShowMenu] = useState(false);
   const lastTouchCountRef = useRef(0);
   const progressContainerRef = useRef<HTMLDivElement>(null);
   const minSwipeDistance = 50;
@@ -164,6 +166,69 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
+      {/* 左上角控制按钮 */}
+      {!showMenu && (
+        <button
+          className="absolute top-4 left-4 z-50 p-2 rounded-full bg-slate-100 hover:bg-slate-200 transition-all duration-300"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowMenu(true);
+          }}
+        >
+          <Settings className="w-6 h-6 text-slate-600" />
+        </button>
+      )}
+
+      {/* 菜单卡片 */}
+      {showMenu && (
+        <div className="absolute top-4 left-4 z-50 bg-white rounded-2xl shadow-xl p-4 w-72 border border-slate-200">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-lg font-semibold text-slate-800">设置</h2>
+            <button
+              className="p-1.5 rounded-full hover:bg-slate-100 transition-colors"
+              onClick={(e) => {
+                e.stopPropagation();
+                setShowMenu(false);
+              }}
+            >
+              <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-4 gap-3">
+            <button className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors">
+              <div className="p-2 rounded-full bg-slate-100">
+                <Volume2 className="w-5 h-5 text-slate-600" />
+              </div>
+              <span className="text-xs text-slate-600">音量</span>
+            </button>
+            
+            <button className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors">
+              <div className="p-2 rounded-full bg-slate-100">
+                <Sun className="w-5 h-5 text-slate-600" />
+              </div>
+              <span className="text-xs text-slate-600">亮度</span>
+            </button>
+            
+            <button className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors">
+              <div className="p-2 rounded-full bg-slate-100">
+                <Palette className="w-5 h-5 text-slate-600" />
+              </div>
+              <span className="text-xs text-slate-600">主题</span>
+            </button>
+            
+            <button className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors">
+              <div className="p-2 rounded-full bg-slate-100">
+                <Settings className="w-5 h-5 text-slate-600" />
+              </div>
+              <span className="text-xs text-slate-600">更多</span>
+            </button>
+          </div>
+        </div>
+      )}
+
       <div className="text-center w-full max-w-2xl">
         <p 
           className={`${themeConfig.colors.phonetic} mb-4 font-light`}
