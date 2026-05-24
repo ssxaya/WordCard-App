@@ -174,6 +174,8 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
             e.stopPropagation();
             setShowMenu(true);
           }}
+          onMouseDown={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
         >
           <Settings className="w-6 h-6 text-slate-600" />
         </button>
@@ -181,7 +183,11 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
 
       {/* 菜单卡片 */}
       {showMenu && (
-        <div className="absolute top-4 left-4 z-50 bg-white rounded-2xl shadow-xl p-4 w-72 border border-slate-200">
+        <div 
+          className="absolute top-4 left-4 z-50 bg-white rounded-2xl shadow-xl p-4 w-72 border border-slate-200"
+          onMouseDown={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
+        >
           <div className="flex items-center justify-between mb-4">
             <h2 className="text-lg font-semibold text-slate-800">设置</h2>
             <button
@@ -190,6 +196,8 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
                 e.stopPropagation();
                 setShowMenu(false);
               }}
+              onMouseDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
             >
               <svg className="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -198,28 +206,40 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
           </div>
           
           <div className="grid grid-cols-4 gap-3">
-            <button className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors">
+            <button 
+              className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="p-2 rounded-full bg-slate-100">
                 <Volume2 className="w-5 h-5 text-slate-600" />
               </div>
               <span className="text-xs text-slate-600">音量</span>
             </button>
             
-            <button className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors">
+            <button 
+              className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="p-2 rounded-full bg-slate-100">
                 <Sun className="w-5 h-5 text-slate-600" />
               </div>
               <span className="text-xs text-slate-600">亮度</span>
             </button>
             
-            <button className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors">
+            <button 
+              className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="p-2 rounded-full bg-slate-100">
                 <Palette className="w-5 h-5 text-slate-600" />
               </div>
               <span className="text-xs text-slate-600">主题</span>
             </button>
             
-            <button className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors">
+            <button 
+              className="flex flex-col items-center gap-2 p-3 rounded-xl hover:bg-slate-100 transition-colors"
+              onClick={(e) => e.stopPropagation()}
+            >
               <div className="p-2 rounded-full bg-slate-100">
                 <Settings className="w-5 h-5 text-slate-600" />
               </div>
