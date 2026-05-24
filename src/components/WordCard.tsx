@@ -20,10 +20,8 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
   const [activeTouches, setActiveTouches] = useState(0);
   const [isDraggingProgress, setIsDraggingProgress] = useState(false);
   const [showMenu, setShowMenu] = useState(false);
-  const shouldSkipNextClick = useRef(false);
   const lastTouchCountRef = useRef(0);
   const progressContainerRef = useRef<HTMLDivElement>(null);
-  const menuRef = useRef<HTMLDivElement>(null);
   const minSwipeDistance = 50;
 
   // 处理进度条拖动
@@ -60,14 +58,6 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
       setIsDraggingProgress(false);
     };
 
-    const handleClickOutside = (e: MouseEvent | TouchEvent) => {
-      const target = 'targetTouches' in e ? e.targetTouches[0]?.target : e.target;
-      if (menuRef.current && target && !menuRef.current.contains(target as Node)) {
-        shouldSkipNextClick.current = true;
-        setShowMenu(false);
-      }
-    };
-
     if (isDraggingProgress) {
       document.addEventListener('mousemove', handleMouseMove);
       document.addEventListener('mouseup', handleMouseUp);
@@ -75,20 +65,13 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
       document.addEventListener('touchend', handleTouchEnd);
     }
 
-    if (showMenu) {
-      document.addEventListener('mousedown', handleClickOutside as EventListener);
-      document.addEventListener('touchstart', handleClickOutside as EventListener);
-    }
-
     return () => {
       document.removeEventListener('mousemove', handleMouseMove);
       document.removeEventListener('mouseup', handleMouseUp);
       document.removeEventListener('touchmove', handleTouchMove);
       document.removeEventListener('touchend', handleTouchEnd);
-      document.removeEventListener('mousedown', handleClickOutside as EventListener);
-      document.removeEventListener('touchstart', handleClickOutside as EventListener);
     };
-  }, [isDraggingProgress, showMenu]);
+  }, [isDraggingProgress]);
 
   const updateProgressFromPosition = (clientX: number) => {
     if (progressContainerRef.current) {
@@ -102,10 +85,6 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
 
   // 处理鼠标点击
   const handleMouseDown = (e: React.MouseEvent) => {
-    if (shouldSkipNextClick.current) {
-      shouldSkipNextClick.current = false;
-      return;
-    }
     if (e.button === 0) { // 左键
       onNext();
     } else if (e.button === 2) { // 右键
@@ -147,10 +126,6 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
 
   // 触摸结束
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (shouldSkipNextClick.current) {
-      shouldSkipNextClick.current = false;
-      return;
-    }
     const now = Date.now();
     const touchDuration = now - touchStartTime;
     
@@ -209,7 +184,6 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
       {/* 菜单卡片 */}
       {showMenu && (
         <div 
-          ref={menuRef}
           className="absolute top-4 left-4 z-50 bg-white rounded-2xl shadow-xl p-4 w-72 border border-slate-200"
           onMouseDown={(e) => e.stopPropagation()}
           onTouchStart={(e) => e.stopPropagation()}
