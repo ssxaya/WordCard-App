@@ -225,7 +225,11 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
               >
                 {/* 实际显示的黑色竖线 */}
                 <div 
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-4 bg-slate-800 transition-all duration-300 hover:scale-150 hover:h-6 hover:w-1"
+                  className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-800 transition-all duration-300 ${
+                    isDraggingProgress 
+                      ? 'scale-150 h-6 w-1' 
+                      : 'w-0.5 h-4 hover:scale-150 hover:h-6 hover:w-1'
+                  }`}
                 />
               </div>
             </div>
