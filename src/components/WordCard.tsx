@@ -218,10 +218,16 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
               onMouseDown={handleProgressMouseDown}
               onTouchStart={handleProgressTouchStart}
             >
+              {/* 增加受击面积的透明容器 */}
               <div 
-                className="absolute top-1/2 -translate-y-1/2 w-0.5 h-4 bg-slate-800 transition-all duration-300 hover:scale-150 hover:h-6 hover:w-1"
+                className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 cursor-pointer"
                 style={{ left: `${(currentIndex / (total - 1)) * 100}%` }}
-              />
+              >
+                {/* 实际显示的黑色竖线 */}
+                <div 
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-0.5 h-4 bg-slate-800 transition-all duration-300 hover:scale-150 hover:h-6 hover:w-1"
+                />
+              </div>
             </div>
           )}
         </div>
