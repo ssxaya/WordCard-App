@@ -181,6 +181,19 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
         </button>
       )}
 
+      {/* 点击外部关闭菜单的遮罩 */}
+      {showMenu && (
+        <div 
+          className="fixed inset-0 z-40"
+          onClick={(e) => {
+            e.stopPropagation();
+            setShowMenu(false);
+          }}
+          onMouseDown={(e) => e.stopPropagation()}
+          onTouchStart={(e) => e.stopPropagation()}
+        />
+      )}
+
       {/* 菜单卡片 */}
       {showMenu && (
         <div 
