@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Word } from "@/types/word";
 import { themeConfig } from "@/config/theme";
+import { Menu, X } from "lucide-react";
 
 interface WordCardProps {
   word: Word;
@@ -18,9 +19,28 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
   const [touchStartTime, setTouchStartTime] = useState<number>(0);
   const [activeTouches, setActiveTouches] = useState(0);
   const [isDraggingProgress, setIsDraggingProgress] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const lastTouchCountRef = useRef(0);
   const progressContainerRef = useRef<HTMLDivElement>(null);
+  const menuRef = useRef<HTMLDivElement>(null);
   const minSwipeDistance = 50;
+
+  // 点击菜单外部关闭菜单
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   // 处理进度条拖动
   const handleProgressMouseDown = (e: React.MouseEvent) => {
@@ -164,6 +184,54 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
     >
+      {/* 控制按钮和菜单容器 */}
+      <div ref={menuRef} className="absolute top-6 left-6 z-50">
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            setIsMenuOpen(!isMenuOpen);
+          }}
+          className="p-2 rounded-full hover:bg-slate-100 transition-colors"
+        >
+          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
+        </button>
+
+        {/* 控制菜单 */}
+        {isMenuOpen && (
+          <div className="absolute top-full left-0 mt-2 bg-white rounded-xl shadow-lg border border-slate-200 p-4 min-w-[200px]">
+            <div className="space-y-2">
+              <button 
+                className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // 可以在这里添加菜单功能
+                }}
+              >
+                选项 1
+              </button>
+              <button 
+                className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // 可以在这里添加菜单功能
+                }}
+              >
+                选项 2
+              </button>
+              <button 
+                className="w-full text-left px-3 py-2 rounded-lg hover:bg-slate-100 transition-colors"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  // 可以在这里添加菜单功能
+                }}
+              >
+                选项 3
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
       <div className="text-center w-full max-w-2xl">
         <p 
           className={`${themeConfig.colors.phonetic} mb-4 font-light`}
