@@ -218,20 +218,23 @@ const WordCard: React.FC<WordCardProps> = ({ word, onNext, onPrev, onIndexChange
               onMouseDown={handleProgressMouseDown}
               onTouchStart={handleProgressTouchStart}
             >
-              {/* 增加受击面积的透明容器 */}
+              {/* 透明受击区域（放在下方，不拦截事件） */}
               <div 
                 className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-8 h-8 cursor-pointer"
+                style={{ 
+                  left: `${(currentIndex / (total - 1)) * 100}%`,
+                  pointerEvents: 'none'
+                }}
+              />
+              {/* 黑色竖线 */}
+              <div 
+                className={`absolute top-1/2 -translate-y-1/2 -translate-x-1/2 bg-slate-800 rounded-full transition-all duration-300 ${
+                  isDraggingProgress 
+                    ? 'scale-125 h-5 w-0.75' 
+                    : 'w-0.5 h-4 hover:scale-125 hover:h-5 hover:w-0.75'
+                }`}
                 style={{ left: `${(currentIndex / (total - 1)) * 100}%` }}
-              >
-                {/* 实际显示的黑色竖线 */}
-                <div 
-                  className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-slate-800 transition-all duration-300 rounded-full ${
-                    isDraggingProgress 
-                      ? 'scale-125 h-5 w-0.75' 
-                      : 'w-0.5 h-4 hover:scale-125 hover:h-5 hover:w-0.75'
-                  }`}
-                />
-              </div>
+              />
             </div>
           )}
         </div>
